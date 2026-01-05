@@ -1,10 +1,20 @@
 import { useState, useEffect } from "react";
-import { Check, ChevronDown, MapPin, Phone, Mail, CheckCircle, XCircle, Loader2 } from "lucide-react";
+import {
+  Check,
+  ChevronDown,
+  MapPin,
+  Phone,
+  Mail,
+  CheckCircle,
+  XCircle,
+  Loader2,
+} from "lucide-react";
 import LoadingState from "../components/reusable/LoadingState";
 import ErrorState from "../components/reusable/ErrorState";
 
-const BackendURL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
-const BackendImagesURL = import.meta.env.VITE_BACKEND_IMAGES_URL || 'http://localhost:5000/api';
+const BackendURL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+const BackendImagesURL =
+  import.meta.env.VITE_BACKEND_IMAGES_URL || "http://localhost:5000/api";
 
 const BangladeshVac = () => {
   const [formData, setFormData] = useState(null);
@@ -15,7 +25,7 @@ const BangladeshVac = () => {
   const [activeImage, setActiveImage] = useState(0);
   const [submitStatus, setSubmitStatus] = useState(null);
   const [submitLoading, setSubmitLoading] = useState(false);
-  const [submitMessage, setSubmitMessage] = useState('');
+  const [submitMessage, setSubmitMessage] = useState("");
 
   useEffect(() => {
     fetchFormData();
@@ -24,7 +34,9 @@ const BangladeshVac = () => {
   const fetchFormData = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${BackendURL}/api/forms/slug/bangladesh-vac`);
+      const response = await fetch(
+        `${BackendURL}/api/forms/slug/bangladesh-vac`
+      );
       if (!response.ok) throw new Error("Failed to fetch form data");
       const data = await response.json();
       setFormData(data);
@@ -36,22 +48,24 @@ const BangladeshVac = () => {
   };
 
   const getImageUrl = (imagePath) => {
-    if (!imagePath) return '';
-    if (imagePath.startsWith('http')) return imagePath;
-    if (imagePath.startsWith('/api/')) {
+    if (!imagePath) return "";
+    if (imagePath.startsWith("http")) return imagePath;
+    if (imagePath.startsWith("/api/")) {
       return `${BackendURL}${imagePath}`;
     }
-    if (imagePath.startsWith('/uploads/')) {
+    if (imagePath.startsWith("/uploads/")) {
       return `${BackendURL}/api${imagePath}`;
     }
-    return `${BackendImagesURL}${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
+    return `${BackendImagesURL}${
+      imagePath.startsWith("/") ? "" : "/"
+    }${imagePath}`;
   };
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormValues(prev => ({
+    setFormValues((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
@@ -59,35 +73,56 @@ const BangladeshVac = () => {
     e.preventDefault();
     setSubmitLoading(true);
     setSubmitStatus(null);
-    setSubmitMessage('');
+    setSubmitMessage("");
 
     try {
-      const response = await fetch(`${BackendURL}/api/form-submissions/slug/bangladesh-vac`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formValues),
-      });
+      const response = await fetch(
+        `${BackendURL}/api/form-submissions/slug/bangladesh-vac`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formValues),
+        }
+      );
       const res = await response.json();
 
       if (response.ok) {
-        setSubmitStatus('success');
-        setSubmitMessage('Thank you! Your application has been submitted successfully. Our team will contact you shortly.');
+        setSubmitStatus("success");
+        setSubmitMessage(
+          "Thank you! Your application has been submitted successfully. Our team will contact you shortly."
+        );
         setFormValues({});
       } else {
-        setSubmitStatus('error');
-        setSubmitMessage(res.message || 'Something went wrong. Please try again.');
+        setSubmitStatus("error");
+        setSubmitMessage(
+          res.message || "Something went wrong. Please try again."
+        );
       }
     } catch (err) {
-      setSubmitStatus('error');
-      setSubmitMessage('Failed to submit. Please check your connection and try again.');
+      setSubmitStatus("error");
+      setSubmitMessage(
+        "Failed to submit. Please check your connection and try again."
+      );
     } finally {
       setSubmitLoading(false);
-      setTimeout(() => { setSubmitStatus(null); setSubmitMessage(''); }, 5000);
+      setTimeout(() => {
+        setSubmitStatus(null);
+        setSubmitMessage("");
+      }, 5000);
     }
   };
 
-  if (loading) return <LoadingState message="Loading Bangladesh VAC..." fullScreen />;
-  if (error) return <ErrorState error={error} onRetry={fetchFormData} showHomeButton fullScreen />;
+  if (loading)
+    return <LoadingState message="Loading Bangladesh VAC..." fullScreen />;
+  if (error)
+    return (
+      <ErrorState
+        error={error}
+        onRetry={fetchFormData}
+        showHomeButton
+        fullScreen
+      />
+    );
 
   const {
     description,
@@ -96,23 +131,26 @@ const BangladeshVac = () => {
     documents = [],
     contentSections = {},
     formImages = [],
-    formEmployeesAddresses = []
+    formEmployeesAddresses = [],
   } = formData || {};
 
   // Get sections by API keys
-  const heroSection = contentSections['heroSecction'] || [];
-  const collaborationSection = contentSections['EXCLUSIVE COLLABORATION with SONALI BANK – BANGLADESH LARGEST BANK'] || [];
+  const heroSection = contentSections["heroSecction"] || [];
+  const collaborationSection =
+    contentSections[
+      "EXCLUSIVE COLLABORATION with SONALI BANK – BANGLADESH LARGEST BANK"
+    ] || [];
 
   return (
     <div className="bg-white font-sans">
-
       {/* ===== HERO BANNER ===== */}
       <section
-        className="relative w-full py-20 bg-cover bg-center h-[800px] flex items-center"
+        className="relative w-full py-20 bg-cover bg-center min-h-[800px] sm:h-[800px] flex items-center"
         style={{
-          backgroundImage: formData?.image ? `url(${getImageUrl(formData.image)})` : 'none'
-        }}
-      >
+          backgroundImage: formData?.image
+            ? `url(${getImageUrl(formData.image)})`
+            : "none",
+        }}>
         {/* Dark overlay */}
         <div className="absolute inset-0 bg-black/60" />
 
@@ -143,17 +181,27 @@ const BangladeshVac = () => {
         <section className="py-16 bg-gray-50">
           <div className="max-w-4xl mx-auto px-6">
             <div className="text-center mb-10">
-              <h2 className="text-3xl font-bold text-gray-900 mb-3">Apply Now</h2>
-              <div className="w-20 h-1 mx-auto" style={{ backgroundColor: '#E31E24' }}></div>
+              <h2 className="text-3xl font-bold text-gray-900 mb-3">
+                Apply Now
+              </h2>
+              <div
+                className="w-20 h-1 mx-auto"
+                style={{ backgroundColor: "#E31E24" }}></div>
             </div>
 
             <div className="bg-white rounded-xl p-8 shadow-lg">
               <form className="space-y-4" onSubmit={handleSubmit}>
                 {(() => {
-                  const textFields = fields.filter(f => ['text', 'email', 'number'].includes(f.type));
-                  const dateFields = fields.filter(f => f.type === 'date');
-                  const selectFields = fields.filter(f => f.type === 'select' || f.type === 'dropdown');
-                  const checkboxFields = fields.filter(f => f.type === 'checkbox');
+                  const textFields = fields.filter((f) =>
+                    ["text", "email", "number"].includes(f.type)
+                  );
+                  const dateFields = fields.filter((f) => f.type === "date");
+                  const selectFields = fields.filter(
+                    (f) => f.type === "select" || f.type === "dropdown"
+                  );
+                  const checkboxFields = fields.filter(
+                    (f) => f.type === "checkbox"
+                  );
 
                   const textFieldPairs = [];
                   for (let i = 0; i < textFields.length; i += 2) {
@@ -163,13 +211,19 @@ const BangladeshVac = () => {
                   return (
                     <>
                       {textFieldPairs.map((pair, pairIndex) => (
-                        <div key={pairIndex} className={`grid gap-4 ${pair.length === 2 ? 'md:grid-cols-2' : 'grid-cols-1'}`}>
+                        <div
+                          key={pairIndex}
+                          className={`grid gap-4 ${
+                            pair.length === 2 ? "md:grid-cols-2" : "grid-cols-1"
+                          }`}>
                           {pair.map((field, index) => (
                             <input
                               key={field._id || `text-${pairIndex}-${index}`}
-                              type={field.type === 'number' ? 'tel' : field.type}
+                              type={
+                                field.type === "number" ? "tel" : field.type
+                              }
                               name={field.name}
-                              value={formValues[field.name] || ''}
+                              value={formValues[field.name] || ""}
                               onChange={handleInputChange}
                               placeholder={field.placeholder || field.label}
                               className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 placeholder-gray-400 focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all outline-none"
@@ -180,19 +234,27 @@ const BangladeshVac = () => {
                       ))}
 
                       {selectFields.length > 0 && (
-                        <div className={`grid gap-4 ${selectFields.length >= 2 ? 'md:grid-cols-2' : 'grid-cols-1'}`}>
+                        <div
+                          className={`grid gap-4 ${
+                            selectFields.length >= 2
+                              ? "md:grid-cols-2"
+                              : "grid-cols-1"
+                          }`}>
                           {selectFields.map((field, index) => (
                             <select
                               key={field._id || `select-${index}`}
                               name={field.name}
-                              value={formValues[field.name] || ''}
+                              value={formValues[field.name] || ""}
                               onChange={handleInputChange}
                               className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all outline-none appearance-none cursor-pointer"
-                              required={field.required}
-                            >
-                              <option value="">{field.placeholder || field.label}</option>
+                              required={field.required}>
+                              <option value="">
+                                {field.placeholder || field.label}
+                              </option>
                               {field.options?.map((opt, optIdx) => (
-                                <option key={opt._id || optIdx} value={opt.value || opt}>
+                                <option
+                                  key={opt._id || optIdx}
+                                  value={opt.value || opt}>
                                   {opt.label || opt}
                                 </option>
                               ))}
@@ -206,7 +268,7 @@ const BangladeshVac = () => {
                           key={field._id || `date-${index}`}
                           type="date"
                           name={field.name}
-                          value={formValues[field.name] || ''}
+                          value={formValues[field.name] || ""}
                           onChange={handleInputChange}
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all outline-none"
                           required={field.required}
@@ -214,7 +276,9 @@ const BangladeshVac = () => {
                       ))}
 
                       {checkboxFields.map((field, index) => (
-                        <label key={field._id || `checkbox-${index}`} className="flex items-start gap-3 text-gray-700 cursor-pointer">
+                        <label
+                          key={field._id || `checkbox-${index}`}
+                          className="flex items-start gap-3 text-gray-700 cursor-pointer">
                           <input
                             type="checkbox"
                             name={field.name}
@@ -231,18 +295,37 @@ const BangladeshVac = () => {
 
                 {/* Submit Status Message */}
                 {submitStatus && (
-                  <div className={`flex items-center gap-3 p-3 rounded ${submitStatus === 'success' ? 'bg-green-100' : 'bg-red-100'}`}>
-                    {submitStatus === 'success' ? <CheckCircle className="w-5 h-5 text-green-600" /> : <XCircle className="w-5 h-5 text-red-600" />}
-                    <p className={`text-sm ${submitStatus === 'success' ? 'text-green-700' : 'text-red-700'}`}>{submitMessage}</p>
+                  <div
+                    className={`flex items-center gap-3 p-3 rounded ${
+                      submitStatus === "success" ? "bg-green-100" : "bg-red-100"
+                    }`}>
+                    {submitStatus === "success" ? (
+                      <CheckCircle className="w-5 h-5 text-green-600" />
+                    ) : (
+                      <XCircle className="w-5 h-5 text-red-600" />
+                    )}
+                    <p
+                      className={`text-sm ${
+                        submitStatus === "success"
+                          ? "text-green-700"
+                          : "text-red-700"
+                      }`}>
+                      {submitMessage}
+                    </p>
                   </div>
                 )}
 
                 <button
                   type="submit"
                   disabled={submitLoading}
-                  className="w-full py-3 rounded-full font-bold text-base transition-all duration-300 bg-[#FF1033] text-[#FFFDF5] hover:bg-[#511313] hover:text-[#FF1033] uppercase disabled:opacity-70 flex items-center justify-center gap-2"
-                >
-                  {submitLoading ? <><Loader2 className="w-5 h-5 animate-spin" /> Submitting...</> : 'Submit Application'}
+                  className="w-full py-3 rounded-full font-bold text-base transition-all duration-300 bg-[#FF1033] text-[#FFFDF5] hover:bg-[#511313] hover:text-[#FF1033] uppercase disabled:opacity-70 flex items-center justify-center gap-2">
+                  {submitLoading ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" /> Submitting...
+                    </>
+                  ) : (
+                    "Submit Application"
+                  )}
                 </button>
               </form>
             </div>
@@ -259,7 +342,9 @@ const BangladeshVac = () => {
                 <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6 text-center">
                   {item.title}
                 </h2>
-                <div className="w-20 h-1 mx-auto mb-8" style={{ backgroundColor: '#E31E24' }}></div>
+                <div
+                  className="w-20 h-1 mx-auto mb-8"
+                  style={{ backgroundColor: "#E31E24" }}></div>
                 <p className="text-gray-700 leading-relaxed text-lg whitespace-pre-line text-center max-w-4xl mx-auto">
                   {item.contentHtml}
                 </p>
@@ -274,15 +359,12 @@ const BangladeshVac = () => {
       {formImages.length > 0 && (
         <section className="py-16 bg-white">
           <div className="max-w-6xl mx-auto px-6">
-
             {formImages.map((gallery, galleryIndex) => (
-              <div key={gallery._id || galleryIndex} className="mb-12 last:mb-0">
-
+              <div
+                key={gallery._id || galleryIndex}
+                className="mb-12 last:mb-0">
                 {/* Title at top */}
-                <div
-
-                  className="overflow-hidden w-[60%] mx-auto rounded-lg shadow-md group cursor-pointer"
-                >
+                <div className="overflow-hidden w-[60%] mx-auto rounded-lg shadow-md group cursor-pointer">
                   <img
                     src={getImageUrl(gallery.images[0])}
                     alt={`${gallery.title} -1`}
@@ -294,15 +376,16 @@ const BangladeshVac = () => {
                 </h2>
 
                 {/* Red underline */}
-                <div className="w-20 h-1 mx-auto mb-8" style={{ backgroundColor: '#E31E24' }}></div>
+                <div
+                  className="w-20 h-1 mx-auto mb-8"
+                  style={{ backgroundColor: "#E31E24" }}></div>
 
                 {/* Image Grid - 3 columns with hover effect */}
                 <div className="grid md:grid-cols-3 gap-4">
                   {gallery.images.slice(1)?.map((img, imgIndex) => (
                     <div
                       key={imgIndex}
-                      className="overflow-hidden rounded-lg shadow-md group cursor-pointer"
-                    >
+                      className="overflow-hidden rounded-lg shadow-md group cursor-pointer">
                       <img
                         src={getImageUrl(img)}
                         alt={`${gallery.title} - ${imgIndex + 2}`}
@@ -317,14 +400,17 @@ const BangladeshVac = () => {
         </section>
       )}
 
-
       {/* ===== LOCATION CARDS SECTION ===== */}
       {formEmployeesAddresses.length > 0 && (
         <section className="py-16 bg-gray-100">
           <div className="max-w-6xl mx-auto px-6">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-3">Our VAC Locations</h2>
-              <div className="w-20 h-1 mx-auto" style={{ backgroundColor: '#E31E24' }}></div>
+              <h2 className="text-3xl font-bold text-gray-900 mb-3">
+                Our VAC Locations
+              </h2>
+              <div
+                className="w-20 h-1 mx-auto"
+                style={{ backgroundColor: "#E31E24" }}></div>
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -332,8 +418,7 @@ const BangladeshVac = () => {
                 <div
                   key={location._id || index}
                   className="rounded-xl p-6 text-white shadow-lg"
-                  style={{ backgroundColor: location.color || '#447d1a' }}
-                >
+                  style={{ backgroundColor: location.color || "#447d1a" }}>
                   <h3 className="text-2xl font-bold mb-4 flex items-center gap-2">
                     <MapPin className="w-6 h-6" />
                     {location.Location}
@@ -346,14 +431,18 @@ const BangladeshVac = () => {
 
                     <div className="flex items-center gap-2">
                       <Mail className="w-4 h-4 shrink-0" />
-                      <a href={`mailto:${location.email}`} className="hover:underline text-sm">
+                      <a
+                        href={`mailto:${location.email}`}
+                        className="hover:underline text-sm">
                         {location.email}
                       </a>
                     </div>
 
                     <div className="flex items-center gap-2">
                       <Phone className="w-4 h-4 shrink-0" />
-                      <a href={`tel:${location.phone}`} className="hover:underline text-sm">
+                      <a
+                        href={`tel:${location.phone}`}
+                        className="hover:underline text-sm">
                         {location.phone}
                       </a>
                     </div>
@@ -370,29 +459,39 @@ const BangladeshVac = () => {
         <section className="py-16 bg-white">
           <div className="max-w-5xl mx-auto px-6">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-3">Documents Required</h2>
-              <div className="w-20 h-1 mx-auto" style={{ backgroundColor: '#E31E24' }}></div>
+              <h2 className="text-3xl font-bold text-gray-900 mb-3">
+                Documents Required
+              </h2>
+              <div
+                className="w-20 h-1 mx-auto"
+                style={{ backgroundColor: "#E31E24" }}></div>
             </div>
 
             <div className="space-y-6">
               {documents.map((doc, index) => (
-                <div key={doc._id || index} className="bg-gray-50 rounded-xl p-6">
+                <div
+                  key={doc._id || index}
+                  className="bg-gray-50 rounded-xl p-6">
                   <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
                     <div
                       className="w-6 h-6 rounded flex items-center justify-center"
-                      style={{ backgroundColor: '#E31E24' }}
-                    >
+                      style={{ backgroundColor: "#E31E24" }}>
                       <Check className="w-4 h-4 text-white" />
                     </div>
                     {doc.title}
                   </h3>
                   <ul className="space-y-2">
-                    {doc.description?.split('\n').filter(line => line.trim()).map((item, idx) => (
-                      <li key={idx} className="flex items-start gap-2 text-gray-600">
-                        <span className="text-gray-400 mt-1">•</span>
-                        <span>{item.trim()}</span>
-                      </li>
-                    ))}
+                    {doc.description
+                      ?.split("\n")
+                      .filter((line) => line.trim())
+                      .map((item, idx) => (
+                        <li
+                          key={idx}
+                          className="flex items-start gap-2 text-gray-600">
+                          <span className="text-gray-400 mt-1">•</span>
+                          <span>{item.trim()}</span>
+                        </li>
+                      ))}
                   </ul>
                 </div>
               ))}
@@ -406,29 +505,37 @@ const BangladeshVac = () => {
         <section className="py-16 bg-gray-50">
           <div className="max-w-4xl mx-auto px-6">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-3">Frequently Asked Questions</h2>
-              <div className="w-20 h-1 mx-auto" style={{ backgroundColor: '#E31E24' }}></div>
+              <h2 className="text-3xl font-bold text-gray-900 mb-3">
+                Frequently Asked Questions
+              </h2>
+              <div
+                className="w-20 h-1 mx-auto"
+                style={{ backgroundColor: "#E31E24" }}></div>
             </div>
 
             <div className="space-y-4">
               {faqs.map((faq, index) => (
                 <div
                   key={faq._id || index}
-                  className="rounded-lg overflow-hidden border border-gray-200 bg-white"
-                >
+                  className="rounded-lg overflow-hidden border border-gray-200 bg-white">
                   <button
                     onClick={() => setOpenFaq(openFaq === index ? null : index)}
-                    className="w-full px-6 py-4 flex items-center justify-between text-left"
-                  >
-                    <span className="font-semibold text-gray-900">{faq.question}</span>
+                    className="w-full px-6 py-4 flex items-center justify-between text-left">
+                    <span className="font-semibold text-gray-900">
+                      {faq.question}
+                    </span>
                     <ChevronDown
-                      className={`w-5 h-5 text-gray-500 transition-transform duration-300 ${openFaq === index ? 'rotate-180' : ''}`}
+                      className={`w-5 h-5 text-gray-500 transition-transform duration-300 ${
+                        openFaq === index ? "rotate-180" : ""
+                      }`}
                     />
                   </button>
 
                   {openFaq === index && (
                     <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
-                      <p className="text-gray-600 leading-relaxed">{faq.answer}</p>
+                      <p className="text-gray-600 leading-relaxed">
+                        {faq.answer}
+                      </p>
                     </div>
                   )}
                 </div>

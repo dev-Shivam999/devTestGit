@@ -3,8 +3,9 @@ import { MapPin, Phone, Mail, ChevronDown } from "lucide-react";
 import LoadingState from "../components/reusable/LoadingState";
 import ErrorState from "../components/reusable/ErrorState";
 
-const BackendURL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
-const BackendImagesURL = import.meta.env.VITE_BACKEND_IMAGES_URL || 'http://localhost:5000/api';
+const BackendURL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+const BackendImagesURL =
+  import.meta.env.VITE_BACKEND_IMAGES_URL || "http://localhost:5000/api";
 
 const Lebanon = () => {
   const [formData, setFormData] = useState(null);
@@ -32,27 +33,37 @@ const Lebanon = () => {
   };
 
   const getImageUrl = (imagePath) => {
-    if (!imagePath) return '';
-    if (imagePath.startsWith('http')) return imagePath;
-    if (imagePath.startsWith('/api/')) {
+    if (!imagePath) return "";
+    if (imagePath.startsWith("http")) return imagePath;
+    if (imagePath.startsWith("/api/")) {
       return `${BackendURL}${imagePath}`;
     }
-    if (imagePath.startsWith('/uploads/')) {
+    if (imagePath.startsWith("/uploads/")) {
       return `${BackendURL}/api${imagePath}`;
     }
-    return `${BackendImagesURL}${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
+    return `${BackendImagesURL}${
+      imagePath.startsWith("/") ? "" : "/"
+    }${imagePath}`;
   };
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormValues(prev => ({
+    setFormValues((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
   if (loading) return <LoadingState message="Loading Lebanon..." fullScreen />;
-  if (error) return <ErrorState error={error} onRetry={fetchFormData} showHomeButton fullScreen />;
+  if (error)
+    return (
+      <ErrorState
+        error={error}
+        onRetry={fetchFormData}
+        showHomeButton
+        fullScreen
+      />
+    );
 
   const {
     name,
@@ -61,12 +72,13 @@ const Lebanon = () => {
     faqs = [],
     documents = [],
     contentSections = {},
-    formEmployeesAddresses = []
+    formEmployeesAddresses = [],
   } = formData || {};
 
   // Get content sections
-  const heroBottomSection = contentSections['heroBottom'] || [];
-  const serviceFeeSection = contentSections['Beneficiary Name: Embassy of Lebanon.'] || [];
+  const heroBottomSection = contentSections["heroBottom"] || [];
+  const serviceFeeSection =
+    contentSections["Beneficiary Name: Embassy of Lebanon."] || [];
 
   // Parse table data from content sections
   const renderTable = (tableData) => {
@@ -78,7 +90,9 @@ const Lebanon = () => {
           <thead>
             <tr className="bg-gray-700 text-white">
               {tableData.headers.map((header, idx) => (
-                <th key={idx} className="px-4 py-3 text-left font-semibold border border-gray-600">
+                <th
+                  key={idx}
+                  className="px-4 py-3 text-left font-semibold border border-gray-600">
                   {header}
                 </th>
               ))}
@@ -86,9 +100,13 @@ const Lebanon = () => {
           </thead>
           <tbody>
             {tableData.rows.map((row, rowIdx) => (
-              <tr key={rowIdx} className={rowIdx % 2 === 0 ? 'bg-gray-100' : 'bg-white'}>
+              <tr
+                key={rowIdx}
+                className={rowIdx % 2 === 0 ? "bg-gray-100" : "bg-white"}>
                 {row.map((cell, cellIdx) => (
-                  <td key={cellIdx} className="px-4 py-3 border border-gray-300 text-gray-700">
+                  <td
+                    key={cellIdx}
+                    className="px-4 py-3 border border-gray-300 text-gray-700">
                     {cell}
                   </td>
                 ))}
@@ -102,24 +120,24 @@ const Lebanon = () => {
 
   // Parse content HTML to extract different parts
   const parseContentHtml = (html) => {
-    if (!html) return { before: '', after: '' };
-    const parts = html.split('// after table');
+    if (!html) return { before: "", after: "" };
+    const parts = html.split("// after table");
     return {
-      before: parts[0]?.trim() || '',
-      after: parts[1]?.trim() || ''
+      before: parts[0]?.trim() || "",
+      after: parts[1]?.trim() || "",
     };
   };
 
   return (
     <div className="bg-white font-sans">
-
       {/* ===== HERO SECTION (1920x800) ===== */}
       <section
-        className="relative w-full h-[800px] bg-cover bg-center flex items-center justify-center"
+        className="relative w-full min-h-[800px] sm:h-[800px] bg-cover bg-center flex items-center justify-center"
         style={{
-          backgroundImage: formData?.image ? `url(${getImageUrl(formData.image)})` : 'none'
-        }}
-      >
+          backgroundImage: formData?.image
+            ? `url(${getImageUrl(formData.image)})`
+            : "none",
+        }}>
         {/* Dark overlay */}
         <div className="absolute inset-0 bg-black/40" />
 
@@ -131,103 +149,126 @@ const Lebanon = () => {
       </section>
 
       {/* ===== CONTENT SECTIONS WITH TABLES ===== */}
-      {heroBottomSection.length > 0 && heroBottomSection.map((section, index) => {
-        const { before, after } = parseContentHtml(section.contentHtml);
+      {heroBottomSection.length > 0 &&
+        heroBottomSection.map((section, index) => {
+          const { before, after } = parseContentHtml(section.contentHtml);
 
-        return (
-          <section key={index} className="py-16 bg-white">
-            <div className="max-w-6xl mx-auto px-6">
-              {/* Content before table */}
-              {before && (
-                <div className="prose max-w-none mb-8">
-                  {before.split('\r\n\r\n').map((paragraph, pIdx) => (
-                    paragraph.trim() && (
-                      <p key={pIdx} className="text-gray-700 mb-4 leading-relaxed">
-                        {paragraph}
-                      </p>
-                    )
-                  ))}
-                </div>
-              )}
+          return (
+            <section key={index} className="py-16 bg-white">
+              <div className="max-w-6xl mx-auto px-6">
+                {/* Content before table */}
+                {before && (
+                  <div className="prose max-w-none mb-8">
+                    {before.split("\r\n\r\n").map(
+                      (paragraph, pIdx) =>
+                        paragraph.trim() && (
+                          <p
+                            key={pIdx}
+                            className="text-gray-700 mb-4 leading-relaxed">
+                            {paragraph}
+                          </p>
+                        )
+                    )}
+                  </div>
+                )}
 
-              {/* Visa Fee Table */}
-              {section.tableData && (
-                <>
-                  <h3 className="text-xl font-bold text-gray-800 mb-4">Visa Fee:</h3>
-                  {renderTable(section.tableData)}
-                </>
-              )}
+                {/* Visa Fee Table */}
+                {section.tableData && (
+                  <>
+                    <h3 className="text-xl font-bold text-gray-800 mb-4">
+                      Visa Fee:
+                    </h3>
+                    {renderTable(section.tableData)}
+                  </>
+                )}
 
-              {/* Content after table (Important Notes) */}
-              {after && (
-                <div className="prose max-w-none mt-8">
-                  {after.split('\r\n\r\n').map((paragraph, pIdx) => {
-                    if (paragraph.includes('Important Notes:') || paragraph.includes('For Nepal:') || paragraph.includes('For Bangladesh:')) {
+                {/* Content after table (Important Notes) */}
+                {after && (
+                  <div className="prose max-w-none mt-8">
+                    {after.split("\r\n\r\n").map((paragraph, pIdx) => {
+                      if (
+                        paragraph.includes("Important Notes:") ||
+                        paragraph.includes("For Nepal:") ||
+                        paragraph.includes("For Bangladesh:")
+                      ) {
+                        return (
+                          <div key={pIdx} className="mb-4">
+                            <p className="text-red-600 font-semibold mb-2">
+                              {paragraph.split(":")[0]}:
+                            </p>
+                            <p className="text-gray-700">
+                              {paragraph.split(":").slice(1).join(":")}
+                            </p>
+                          </div>
+                        );
+                      }
                       return (
-                        <div key={pIdx} className="mb-4">
-                          <p className="text-red-600 font-semibold mb-2">
-                            {paragraph.split(':')[0]}:
+                        paragraph.trim() && (
+                          <p key={pIdx} className="text-gray-600 text-sm mb-2">
+                            * {paragraph}
                           </p>
-                          <p className="text-gray-700">
-                            {paragraph.split(':').slice(1).join(':')}
-                          </p>
-                        </div>
+                        )
                       );
-                    }
-                    return paragraph.trim() && (
-                      <p key={pIdx} className="text-gray-600 text-sm mb-2">
-                        * {paragraph}
-                      </p>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-          </section>
-        );
-      })}
+                    })}
+                  </div>
+                )}
+              </div>
+            </section>
+          );
+        })}
 
       {/* ===== SERVICE FEE SECTION ===== */}
-      {serviceFeeSection.length > 0 && serviceFeeSection.map((section, index) => (
-        <section key={index} className="py-12 bg-gray-50">
-          <div className="max-w-6xl mx-auto px-6">
-            <h3 className="text-xl font-bold text-gray-800 mb-4">{section.title}</h3>
+      {serviceFeeSection.length > 0 &&
+        serviceFeeSection.map((section, index) => (
+          <section key={index} className="py-12 bg-gray-50">
+            <div className="max-w-6xl mx-auto px-6">
+              <h3 className="text-xl font-bold text-gray-800 mb-4">
+                {section.title}
+              </h3>
 
-            {section.contentHtml && (
-              <div className="prose max-w-none mb-6">
-                {section.contentHtml.split('\r\n\r\n').filter(p => p.trim()).map((paragraph, pIdx) => (
-                  <p key={pIdx} className="text-gray-700 mb-2">
-                    {paragraph}
-                  </p>
-                ))}
-              </div>
-            )}
+              {section.contentHtml && (
+                <div className="prose max-w-none mb-6">
+                  {section.contentHtml
+                    .split("\r\n\r\n")
+                    .filter((p) => p.trim())
+                    .map((paragraph, pIdx) => (
+                      <p key={pIdx} className="text-gray-700 mb-2">
+                        {paragraph}
+                      </p>
+                    ))}
+                </div>
+              )}
 
-            {section.tableData && renderTable(section.tableData)}
-          </div>
-        </section>
-      ))}
+              {section.tableData && renderTable(section.tableData)}
+            </div>
+          </section>
+        ))}
 
       {/* ===== FORM SECTION (if fields exist) ===== */}
       {fields.length > 0 && (
         <section className="py-16 bg-white">
           <div className="max-w-4xl mx-auto px-6">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Apply Now</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+              Apply Now
+            </h2>
             <form className="space-y-4">
               {fields.map((field, index) => {
-                if (field.type === 'select' || field.type === 'dropdown') {
+                if (field.type === "select" || field.type === "dropdown") {
                   return (
                     <select
                       key={field._id || index}
                       name={field.name}
-                      value={formValues[field.name] || ''}
+                      value={formValues[field.name] || ""}
                       onChange={handleInputChange}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all outline-none"
-                      required={field.required}
-                    >
-                      <option value="">{field.placeholder || field.label}</option>
+                      required={field.required}>
+                      <option value="">
+                        {field.placeholder || field.label}
+                      </option>
                       {field.options?.map((opt, optIdx) => (
-                        <option key={opt._id || optIdx} value={opt.value || opt}>
+                        <option
+                          key={opt._id || optIdx}
+                          value={opt.value || opt}>
                           {opt.label || opt}
                         </option>
                       ))}
@@ -237,9 +278,9 @@ const Lebanon = () => {
                 return (
                   <input
                     key={field._id || index}
-                    type={field.type || 'text'}
+                    type={field.type || "text"}
                     name={field.name}
-                    value={formValues[field.name] || ''}
+                    value={formValues[field.name] || ""}
                     onChange={handleInputChange}
                     placeholder={field.placeholder || field.label}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all outline-none"
@@ -249,8 +290,7 @@ const Lebanon = () => {
               })}
               <button
                 type="submit"
-                className="w-full py-4 rounded-full font-bold text-base transition-all duration-300 bg-[#FF1033] text-[#FFFDF5] hover:bg-[#511313] hover:text-[#FF1033]"
-              >
+                className="w-full py-4 rounded-full font-bold text-base transition-all duration-300 bg-[#FF1033] text-[#FFFDF5] hover:bg-[#511313] hover:text-[#FF1033]">
                 Submit Application
               </button>
             </form>
@@ -269,9 +309,10 @@ const Lebanon = () => {
               {documents.map((doc, index) => (
                 <div
                   key={doc._id || index}
-                  className="bg-white p-6 rounded-lg shadow-md border-l-4 border-red-500"
-                >
-                  <h3 className="font-semibold text-gray-800 mb-2">{doc.title || doc.name}</h3>
+                  className="bg-white p-6 rounded-lg shadow-md border-l-4 border-red-500">
+                  <h3 className="font-semibold text-gray-800 mb-2">
+                    {doc.title || doc.name}
+                  </h3>
                   {doc.description && (
                     <p className="text-gray-600 text-sm">{doc.description}</p>
                   )}
@@ -286,7 +327,6 @@ const Lebanon = () => {
       {faqs.length > 0 && (
         <section className="bg-white py-24">
           <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
-
             {/* LEFT CONTENT */}
             <div>
               <h2 className="text-4xl font-bold leading-tight mb-6">
@@ -295,14 +335,13 @@ const Lebanon = () => {
               </h2>
 
               <p className="text-gray-500 max-w-md mb-6">
-                Find answers to common questions about Lebanon visa applications,
-                processing times, and required documents.
+                Find answers to common questions about Lebanon visa
+                applications, processing times, and required documents.
               </p>
 
               <a
                 href="#"
-                className="inline-flex items-center text-[#FF1033] font-medium hover:underline"
-              >
+                className="inline-flex items-center text-[#FF1033] font-medium hover:underline">
                 More FAQs →
               </a>
             </div>
@@ -313,8 +352,7 @@ const Lebanon = () => {
                 <div key={index} className="py-6">
                   <button
                     onClick={() => setOpenFaq(openFaq === index ? null : index)}
-                    className="w-full flex justify-between items-center text-left"
-                  >
+                    className="w-full flex justify-between items-center text-left">
                     <span className="text-lg font-semibold text-gray-900">
                       {faq.question}
                     </span>
@@ -325,9 +363,7 @@ const Lebanon = () => {
                   </button>
 
                   {openFaq === index && (
-                    <p className="mt-4 text-gray-500 max-w-xl">
-                      {faq.answer}
-                    </p>
+                    <p className="mt-4 text-gray-500 max-w-xl">{faq.answer}</p>
                   )}
                 </div>
               ))}
@@ -348,12 +384,11 @@ const Lebanon = () => {
               {formEmployeesAddresses.map((office, index) => (
                 <div
                   key={office._id || index}
-                  className="bg-white rounded-lg shadow-md overflow-hidden"
-                >
+                  className="bg-white rounded-lg shadow-md overflow-hidden">
                   {/* Red top bar */}
                   <div
                     className="h-2"
-                    style={{ backgroundColor: office.color || '#E31E24' }}
+                    style={{ backgroundColor: office.color || "#E31E24" }}
                   />
 
                   <div className="p-6">
@@ -370,14 +405,18 @@ const Lebanon = () => {
                     {office.Address && (
                       <div className="flex items-start gap-3 mb-3">
                         <MapPin className="w-5 h-5 text-gray-400 shrink-0 mt-0.5" />
-                        <p className="text-gray-600 text-sm">{office.Address}</p>
+                        <p className="text-gray-600 text-sm">
+                          {office.Address}
+                        </p>
                       </div>
                     )}
 
                     {office.phone && (
                       <div className="flex items-center gap-3 mb-3">
                         <Phone className="w-5 h-5 text-gray-400" />
-                        <a href={`tel:${office.phone}`} className="text-gray-600 text-sm hover:text-red-600">
+                        <a
+                          href={`tel:${office.phone}`}
+                          className="text-gray-600 text-sm hover:text-red-600">
                           {office.phone}
                         </a>
                       </div>
@@ -386,7 +425,9 @@ const Lebanon = () => {
                     {office.email && (
                       <div className="flex items-center gap-3 mb-3">
                         <Mail className="w-5 h-5 text-gray-400" />
-                        <a href={`mailto:${office.email}`} className="text-gray-600 text-sm hover:text-red-600">
+                        <a
+                          href={`mailto:${office.email}`}
+                          className="text-gray-600 text-sm hover:text-red-600">
                           {office.email}
                         </a>
                       </div>
@@ -394,7 +435,8 @@ const Lebanon = () => {
 
                     {(office.Open || office.Close) && (
                       <p className="text-gray-500 text-sm mt-4">
-                        <span className="font-medium">Working Days:</span> {office.Open} - {office.Close}
+                        <span className="font-medium">Working Days:</span>{" "}
+                        {office.Open} - {office.Close}
                       </p>
                     )}
                   </div>
@@ -404,7 +446,6 @@ const Lebanon = () => {
           </div>
         </section>
       )}
-
     </div>
   );
 };

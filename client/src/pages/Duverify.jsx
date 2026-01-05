@@ -3,8 +3,9 @@ import { Check, CheckCircle, Mail, Phone } from "lucide-react";
 import LoadingState from "../components/reusable/LoadingState";
 import ErrorState from "../components/reusable/ErrorState";
 
-const BackendURL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
-const BackendImagesURL = import.meta.env.VITE_BACKEND_IMAGES_URL || 'http://localhost:5000/api';
+const BackendURL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+const BackendImagesURL =
+  import.meta.env.VITE_BACKEND_IMAGES_URL || "http://localhost:5000/api";
 
 const Duverify = () => {
   const [formData, setFormData] = useState(null);
@@ -30,34 +31,55 @@ const Duverify = () => {
   };
 
   const getImageUrl = (imagePath) => {
-    if (!imagePath) return '';
-    if (imagePath.startsWith('http')) return imagePath;
-    return `${BackendImagesURL}${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
+    if (!imagePath) return "";
+    if (imagePath.startsWith("http")) return imagePath;
+    return `${BackendImagesURL}${
+      imagePath.startsWith("/") ? "" : "/"
+    }${imagePath}`;
     // return `${BackendURL}${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
   };
 
   if (loading) return <LoadingState message="Loading DuVerify..." fullScreen />;
-  if (error) return <ErrorState error={error} onRetry={fetchFormData} showHomeButton fullScreen />;
+  if (error)
+    return (
+      <ErrorState
+        error={error}
+        onRetry={fetchFormData}
+        showHomeButton
+        fullScreen
+      />
+    );
 
   const { name, description, contentSections = {} } = formData || {};
 
   // Get sections by API keys
-  const aboutSection = contentSections['About DuVerify'] || [];
-  const whyChooseSection = contentSections['Why Choose DuVerify?'] || [];
-  const whatCanDoSection = contentSections['What DuVerify Can Do for You'] || [];
-  const partnershipsSection = contentSections['Key Partnerships'] || [];
-  const demoSection = contentSections[' Request a Demo Today'] || [];
+  const aboutSection = contentSections["About DuVerify"] || [];
+  const whyChooseSection = contentSections["Why Choose DuVerify?"] || [];
+  const whatCanDoSection =
+    contentSections["What DuVerify Can Do for You"] || [];
+  const partnershipsSection = contentSections["Key Partnerships"] || [];
+  const demoSection = contentSections[" Request a Demo Today"] || [];
 
   return (
     <div className="bg-white font-sans">
-
       {/* ===== HERO SECTION ===== */}
-      <section className="relative w-full h-[800px] overflow-hidden">
+      <section className="relative w-full min-h-[800px] sm:h-[800px] overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${getImageUrl(formData?.image) || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'})` }}
+          style={{
+            backgroundImage: `url(${
+              getImageUrl(formData?.image) ||
+              "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
+            })`,
+          }}
         />
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.7) 100%)' }} />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(135deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.7) 100%)",
+          }}
+        />
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 py-32 flex items-center">
           <div className="max-w-3xl text-white">
@@ -65,7 +87,7 @@ const Duverify = () => {
               {name || 'DuVerify – Revolutionizing Document Verification for Visa Processes'}
             </h1> */}
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-6">
-              {name?.startsWith('DuVerify') ? (
+              {name?.startsWith("DuVerify") ? (
                 <>
                   <span className="text-red-500">DuVerify</span>
                   <span className="text-white">{name.slice(8)}</span>
@@ -75,15 +97,14 @@ const Duverify = () => {
               )}
             </h1>
 
-
             <p className="text-xl md:text-2xl text-gray-100 mb-10">
-              {description || 'Trusted by Governments, Embassies, and Consulates Worldwide'}
+              {description ||
+                "Trusted by Governments, Embassies, and Consulates Worldwide"}
             </p>
 
             <a
               href="#connectwithus"
-              className="inline-block px-10 py-4 rounded-full font-bold text-lg transition-all duration-300 bg-[#FF1033] text-[#FFFDF5] hover:bg-[#511313] hover:text-[#FF1033] shadow-lg"
-            >
+              className="inline-block px-10 py-4 rounded-full font-bold text-lg transition-all duration-300 bg-[#FF1033] text-[#FFFDF5] hover:bg-[#511313] hover:text-[#FF1033] shadow-lg">
               Connect with Us
             </a>
           </div>
@@ -99,11 +120,15 @@ const Duverify = () => {
                 About DuVerify
                 {/* <span style={{ color: '#A10000' }}>DuVerify</span> */}
               </h2>
-              <div className="w-16 h-0.75 mx-auto" style={{ backgroundColor: '#A10000' }}></div>
+              <div
+                className="w-16 h-0.75 mx-auto"
+                style={{ backgroundColor: "#A10000" }}></div>
             </div>
 
             {aboutSection.map((item, index) => (
-              <div key={item._id || index} className="grid md:grid-cols-2 gap-12 items-center">
+              <div
+                key={item._id || index}
+                className="grid md:grid-cols-2 gap-12 items-center">
                 <div>
                   <p className="text-[#333333] leading-relaxed text-base md:text-[17px] mb-6">
                     {item.title}
@@ -111,15 +136,25 @@ const Duverify = () => {
 
                   {/* Benefits List from contentHtml */}
                   <ul className="space-y-3">
-                    {item.contentHtml?.split(/\r?\n/).filter(line => line.trim()).map((benefit, idx) => (
-                      <li key={idx} className="flex items-center gap-3">
-                        <div className="w-5 h-5 rounded-none flex items-center justify-center shrink-0 mt-0.5" style={{ backgroundColor: '#A10000' }}>
-                          <Check className="w-4 h-4 text-white" strokeWidth={3} />
-                          {/* <CheckCircle className="w-3 h-3 text-white" strokeWidth={3} /> */}
-                        </div>
-                        <span className="text-[#333333] text-base md:text-lg">{benefit}</span>
-                      </li>
-                    ))}
+                    {item.contentHtml
+                      ?.split(/\r?\n/)
+                      .filter((line) => line.trim())
+                      .map((benefit, idx) => (
+                        <li key={idx} className="flex items-center gap-3">
+                          <div
+                            className="w-5 h-5 rounded-none flex items-center justify-center shrink-0 mt-0.5"
+                            style={{ backgroundColor: "#A10000" }}>
+                            <Check
+                              className="w-4 h-4 text-white"
+                              strokeWidth={3}
+                            />
+                            {/* <CheckCircle className="w-3 h-3 text-white" strokeWidth={3} /> */}
+                          </div>
+                          <span className="text-[#333333] text-base md:text-lg">
+                            {benefit}
+                          </span>
+                        </li>
+                      ))}
                   </ul>
                 </div>
                 <div className="flex justify-center">
@@ -128,7 +163,7 @@ const Duverify = () => {
                       src={getImageUrl(item.image)}
                       alt="About DuVerify"
                       className="max-w-full h-auto rounded-xl shadow-lg"
-                      style={{ maxHeight: '400px' }}
+                      style={{ maxHeight: "400px" }}
                     />
                   )}
                 </div>
@@ -137,7 +172,6 @@ const Duverify = () => {
           </div>
         </section>
       )}
-
 
       {/* ===== WHY CHOOSE DUVERIFY (IMAGE MATCHED UI) ===== */}
       {whyChooseSection.length > 0 && (
@@ -163,8 +197,7 @@ const Duverify = () => {
                 relative rounded-xl p-5 overflow-hidden
                 bg-[#fdeeee]
                 ${index >= 3 ? "lg:col-span-1" : ""}
-              `}
-                  >
+              `}>
                     {/* bg image absolute positioned */}
                     {item.images && (
                       <img
@@ -198,13 +231,15 @@ const Duverify = () => {
         </section>
       )}
 
-
-
       {/* ===== KEY PARTNERSHIPS SECTION - Cards with background images ===== */}
       {partnershipsSection.length > 0 && (
         <section className="relative py-20 bg-gray-900">
           {/* Need bg Image in this section in background */}
-          <img src="/assets/du-verify/WhatsApp-Image-2024-09-12-at-11.56.29-4-scaled.jpeg" alt="Key Partnerships" className="absolute inset-0 w-full h-full object-cover" />
+          <img
+            src="/assets/du-verify/WhatsApp-Image-2024-09-12-at-11.56.29-4-scaled.jpeg"
+            alt="Key Partnerships"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
           {/* Need dark overlay */}
           <div className="absolute inset-0 bg-black/70"></div>
 
@@ -213,7 +248,9 @@ const Duverify = () => {
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3">
                 Key Partnerships
               </h2>
-              <div className="w-16 h-0.75 mx-auto" style={{ backgroundColor: '#A10000' }}></div>
+              <div
+                className="w-16 h-0.75 mx-auto"
+                style={{ backgroundColor: "#A10000" }}></div>
             </div>
 
             {/* Partnership Cards - 2 columns with background images */}
@@ -221,13 +258,16 @@ const Duverify = () => {
               {partnershipsSection.map((partnership, index) => (
                 <div
                   key={partnership._id || index}
-                  className="relative group rounded-lg overflow-hidden border border-white/20 min-h-[280px]"
-                >
+                  className="relative group rounded-lg overflow-hidden border border-white/20 min-h-[280px]">
                   {/* Background Image */}
                   {partnership.image && (
                     <div
                       className="absolute inset-0 bg-cover bg-center"
-                      style={{ backgroundImage: `url(${getImageUrl(partnership.image)})` }}
+                      style={{
+                        backgroundImage: `url(${getImageUrl(
+                          partnership.image
+                        )})`,
+                      }}
                     />
                   )}
                   {/* Dark overlay */}
@@ -235,14 +275,13 @@ const Duverify = () => {
 
                   <div className="absolute inset-0 bg-[#A10000]/50 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
-
                   {/* Content */}
                   <div className="relative z-10 p-8 h-full flex flex-col justify-end">
                     <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold text-white mb-3">
                       {partnership.title}
                     </h3>
                     <p className="text-gray-100 text-sm md:text-base lg:text-lg leading-relaxed">
-                      {partnership.contentHtml?.replace(/\r?\n/g, ' ').trim()}
+                      {partnership.contentHtml?.replace(/\r?\n/g, " ").trim()}
                     </p>
                   </div>
                 </div>
@@ -252,12 +291,10 @@ const Duverify = () => {
         </section>
       )}
 
-
       {/* ===== WHAT DUVERIFY CAN DO FOR YOU ===== */}
       {whatCanDoSection.length > 0 && (
         <section className="py-24 bg-white">
           <div className="max-w-7xl mx-auto px-6 md:px-12">
-
             {/* Heading */}
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-4">
@@ -284,8 +321,7 @@ const Duverify = () => {
                 overflow-hidden
                 flex
                 flex-col
-              "
-                  >
+              ">
                     {/* Number */}
                     <div className="text-4xl font-bold text-[#A10000] mb-6">
                       {number}
@@ -317,7 +353,6 @@ const Duverify = () => {
         </section>
       )}
 
-
       {/* ===== CONNECT WITH US / REQUEST A DEMO SECTION - Two column layout ===== */}
       <section id="connectwithus" className="py-4">
         <div className="flex flex-wrap  gap-3 justify-center">
@@ -328,7 +363,7 @@ const Duverify = () => {
               style={{
                 backgroundImage: demoSection[0]?.image
                   ? `url(${getImageUrl(demoSection[0].image)})`
-                  : `url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')`
+                  : `url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')`,
               }}
             />
             <div className="absolute inset-0 bg-black/70" />
@@ -336,21 +371,28 @@ const Duverify = () => {
 
             <div className="relative z-10 p-10 md:p-10 flex flex-col justify-center h-full">
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold text-white mb-4">
-                {demoSection[0]?.title || 'Request a Demo Today'}
+                {demoSection[0]?.title || "Request a Demo Today"}
               </h2>
               <p className="text-gray-100 leading-relaxed">
-                {demoSection[0]?.contentHtml?.replace(/\r?\n/g, ' ').trim() || 'Discover how DuVerify can transform your visa and document verification workflows.'}
+                {demoSection[0]?.contentHtml?.replace(/\r?\n/g, " ").trim() ||
+                  "Discover how DuVerify can transform your visa and document verification workflows."}
               </p>
             </div>
           </div>
 
           {/* Right - Connect with us */}
           <div className="bg-[#050505] h-[250px] md:p-10 sm:w-[45%] flex flex-col justify-center">
-            <h3 className="text-2xl md:text-3xl lg:text-5xl font-semibold text-white mb-2">Connect with us</h3>
-            <div className="w-12 h-1 mb-8" style={{ backgroundColor: '#A10000' }}></div>
+            <h3 className="text-2xl md:text-3xl lg:text-5xl font-semibold text-white mb-2">
+              Connect with us
+            </h3>
+            <div
+              className="w-12 h-1 mb-8"
+              style={{ backgroundColor: "#A10000" }}></div>
 
             <div className="mb-6">
-              <h4 className="text-xl md:text-2xl lg:text-3xl font-semibold text-white mb-1">Dolly Chauhan</h4>
+              <h4 className="text-xl md:text-2xl lg:text-3xl font-semibold text-white mb-1">
+                Dolly Chauhan
+              </h4>
               <p className="text-gray-100">Manager-Operations</p>
             </div>
 
@@ -358,16 +400,14 @@ const Duverify = () => {
               <a
                 href="mailto:dolly@dudigitalglobal.com"
                 className="flex items-center gap-3 transition-colors"
-                style={{ color: '#e57373' }}
-              >
+                style={{ color: "#e57373" }}>
                 <Mail className="w-5 h-5" />
                 dolly@dudigitalglobal.com
               </a>
               <a
                 href="tel:+917400747408"
                 className="flex items-center gap-3 transition-colors"
-                style={{ color: '#e57373' }}
-              >
+                style={{ color: "#e57373" }}>
                 <Phone className="w-5 h-5" />
                 +91-7400747408
               </a>
@@ -380,9 +420,6 @@ const Duverify = () => {
 };
 
 export default Duverify;
-
-
-
 
 //<h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-6">
 //  <span className="text-red-500">DuVerify</span>

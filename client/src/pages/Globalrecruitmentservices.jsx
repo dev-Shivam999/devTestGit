@@ -20,7 +20,7 @@ import {
   ArrowRight,
   Mail,
   Phone,
-  Check
+  Check,
 } from "lucide-react";
 import LoadingState from "../components/reusable/LoadingState";
 import ErrorState from "../components/reusable/ErrorState";
@@ -33,31 +33,40 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-const BackendURL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
-const BackendImagesURL = import.meta.env.VITE_BACKEND_IMAGES_URL || 'http://localhost:5000/api';
-
+const BackendURL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+const BackendImagesURL =
+  import.meta.env.VITE_BACKEND_IMAGES_URL || "http://localhost:5000/api";
 
 // Default icons for content sections
-const defaultIcons = [Globe, Shield, Layers, Users, Clock, Award, Briefcase, Wrench];
+const defaultIcons = [
+  Globe,
+  Shield,
+  Layers,
+  Users,
+  Clock,
+  Award,
+  Briefcase,
+  Wrench,
+];
 
 // Industry icons mapping
 const industryIconMap = {
-  "oil": Zap,
-  "gas": Zap,
-  "energy": Zap,
-  "it": Cpu,
-  "digital": Cpu,
-  "healthcare": Heart,
-  "construction": HardHat,
-  "engineering": HardHat,
-  "manufacturing": Factory,
-  "supply": Factory,
-  "hospitality": UtensilsCrossed,
-  "services": UtensilsCrossed
+  oil: Zap,
+  gas: Zap,
+  energy: Zap,
+  it: Cpu,
+  digital: Cpu,
+  healthcare: Heart,
+  construction: HardHat,
+  engineering: HardHat,
+  manufacturing: Factory,
+  supply: Factory,
+  hospitality: UtensilsCrossed,
+  services: UtensilsCrossed,
 };
 
 const getIndustryIcon = (title) => {
-  const lowerTitle = title?.toLowerCase() || '';
+  const lowerTitle = title?.toLowerCase() || "";
   for (const [key, IconComponent] of Object.entries(industryIconMap)) {
     if (lowerTitle.includes(key)) {
       return IconComponent;
@@ -84,18 +93,19 @@ const Globalrecruitmentservices = () => {
   const fetchFormData = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${BackendURL}/api/forms/slug/global-recruitment-services`);
+      const response = await fetch(
+        `${BackendURL}/api/forms/slug/global-recruitment-services`
+      );
       if (!response.ok) throw new Error("Failed to fetch form data");
       const data = await response.json();
       setFormData(data);
 
       // Initialize form values from fields
       const initialValues = {};
-      data.fields?.forEach(field => {
-        initialValues[field.name] = '';
+      data.fields?.forEach((field) => {
+        initialValues[field.name] = "";
       });
       setFormValues(initialValues);
-
     } catch (err) {
       setError(err.message);
     } finally {
@@ -108,14 +118,16 @@ const Globalrecruitmentservices = () => {
   };
 
   const getImageUrl = (imagePath) => {
-    if (!imagePath) return '';
-    if (imagePath.startsWith('http')) return imagePath;
-    return `${BackendImagesURL}${imagePath.startsWith('/') ? '' : '/'}${imagePath}`;
+    if (!imagePath) return "";
+    if (imagePath.startsWith("http")) return imagePath;
+    return `${BackendImagesURL}${
+      imagePath.startsWith("/") ? "" : "/"
+    }${imagePath}`;
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormValues(prev => ({ ...prev, [name]: value }));
+    setFormValues((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleContactSubmit = async (e) => {
@@ -125,21 +137,21 @@ const Globalrecruitmentservices = () => {
     try {
       // Sending to contact endpoint - mapping fields if necessary or sending raw
       const response = await fetch(`${BackendURL}/api/contact`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...formValues,
-          source: 'Global Recruitment Services',
-          formId: formData?._id
-        })
+          source: "Global Recruitment Services",
+          formId: formData?._id,
+        }),
       });
 
       if (response.ok) {
         setSubmitSuccess(true);
         // Reset form
         const resetValues = {};
-        formData.fields?.forEach(field => {
-          resetValues[field.name] = '';
+        formData.fields?.forEach((field) => {
+          resetValues[field.name] = "";
         });
         setFormValues(resetValues);
 
@@ -157,29 +169,44 @@ const Globalrecruitmentservices = () => {
     if (!contentHtml) return [];
     return contentHtml
       .split(/\r?\n/)
-      .map(line => line.trim())
-      .filter(line => line && line.length > 0);
+      .map((line) => line.trim())
+      .filter((line) => line && line.length > 0);
   };
 
-  if (loading) return <LoadingState message="Loading recruitment services..." fullScreen />;
-  if (error) return <ErrorState error={error} onRetry={fetchFormData} showHomeButton fullScreen />;
+  if (loading)
+    return (
+      <LoadingState message="Loading recruitment services..." fullScreen />
+    );
+  if (error)
+    return (
+      <ErrorState
+        error={error}
+        onRetry={fetchFormData}
+        showHomeButton
+        fullScreen
+      />
+    );
 
-  const { name, description, faqs = [], contentSections = {}, fields = [] } = formData || {};
+  const {
+    name,
+    description,
+    faqs = [],
+    contentSections = {},
+    fields = [],
+  } = formData || {};
 
   // Get dynamic sections from API
-  const whyChooseSection = contentSections['Why Choose DU Global?'] || [];
-  const ourServicesSection = contentSections['Our Services'] || [];
-  const industriesSection = contentSections['Industries We Serve'] || [];
-  const trackRecordSection = contentSections['Our Track Record'] || [];
-  const readyToBuildSection = contentSections['Ready to Build Your Team?'] || [];
+  const whyChooseSection = contentSections["Why Choose DU Global?"] || [];
+  const ourServicesSection = contentSections["Our Services"] || [];
+  const industriesSection = contentSections["Industries We Serve"] || [];
+  const trackRecordSection = contentSections["Our Track Record"] || [];
+  const readyToBuildSection =
+    contentSections["Ready to Build Your Team?"] || [];
 
   return (
     <div className="font-sans antialiased text-gray-900">
-
-
       {/* ===== HERO SECTION ===== */}
-      <section className="relative h-[800px] flex items-center overflow-hidden md:px-12">
-
+      <section className="relative min-h-[800px] sm:h-[800px] flex items-center overflow-hidden md:px-12">
         {/* Background Image */}
         {formData?.image && (
           <div
@@ -192,7 +219,6 @@ const Globalrecruitmentservices = () => {
         <div className="absolute inset-0 bg-black/65" />
 
         <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 py-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-
           {/* LEFT CONTENT */}
           <div className="text-white">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-5">
@@ -215,7 +241,6 @@ const Globalrecruitmentservices = () => {
 
           {/* RIGHT FORM CARD */}
           <div className="bg-white rounded-2xl p-6 md:p-6 shadow-2xl w-full max-w-md ml-auto">
-
             <h3 className="text-2xl font-bold text-gray-900 mb-6">
               Global Workforce Recruitment
             </h3>
@@ -230,30 +255,28 @@ const Globalrecruitmentservices = () => {
             <form onSubmit={handleContactSubmit} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {fields
-                  .filter(f => f.isActive)
+                  .filter((f) => f.isActive)
                   .sort((a, b) => a.order - b.order)
                   .map((field) => (
                     <div
                       key={field._id}
                       className={
-                        field.type === 'select'
-                          ? 'md:col-span-2'
-                          : 'col-span-1'
-                      }
-                    >
-                      {field.type === 'select' ? (
+                        field.type === "select" ? "md:col-span-2" : "col-span-1"
+                      }>
+                      {field.type === "select" ? (
                         <select
                           name={field.name}
-                          value={formValues[field.name] || ''}
+                          value={formValues[field.name] || ""}
                           onChange={handleInputChange}
                           required={field.required}
-                          className="w-full h-12 px-4 rounded-lg border border-gray-300 focus:border-[#c60505] focus:ring-1 focus:ring-[#c60505] outline-none text-gray-700 text-sm"
-                        >
+                          className="w-full h-12 px-4 rounded-lg border border-gray-300 focus:border-[#c60505] focus:ring-1 focus:ring-[#c60505] outline-none text-gray-700 text-sm">
                           <option value="">
                             {field.placeholder || `Select ${field.label}`}
                           </option>
-                          {field.options?.map(opt => (
-                            <option key={opt._id || opt.value} value={opt.value}>
+                          {field.options?.map((opt) => (
+                            <option
+                              key={opt._id || opt.value}
+                              value={opt.value}>
                               {opt.label}
                             </option>
                           ))}
@@ -262,7 +285,7 @@ const Globalrecruitmentservices = () => {
                         <input
                           type={field.type}
                           name={field.name}
-                          value={formValues[field.name] || ''}
+                          value={formValues[field.name] || ""}
                           onChange={handleInputChange}
                           placeholder={field.placeholder || field.label}
                           required={field.required}
@@ -276,19 +299,15 @@ const Globalrecruitmentservices = () => {
               <button
                 type="submit"
                 disabled={submitting}
-                className={`w-full py-4 rounded-full font-bold text-lg transition-all duration-300 bg-[#FF1033] text-[#FFFDF5] hover:bg-[#511313] hover:text-[#FF1033] ${submitting
-                  ? 'opacity-60 cursor-not-allowed'
-                  : ''
-                  }`}
-              >
-                {submitting ? 'Sending...' : 'Get Started Now'}
+                className={`w-full py-4 rounded-full font-bold text-lg transition-all duration-300 bg-[#FF1033] text-[#FFFDF5] hover:bg-[#511313] hover:text-[#FF1033] ${
+                  submitting ? "opacity-60 cursor-not-allowed" : ""
+                }`}>
+                {submitting ? "Sending..." : "Get Started Now"}
               </button>
             </form>
           </div>
         </div>
       </section>
-
-
 
       {/* ===== WHY CHOOSE DU GLOBAL SECTION (Dynamic) ===== */}
       {whyChooseSection.length > 0 && (
@@ -308,13 +327,16 @@ const Globalrecruitmentservices = () => {
                 return (
                   <div
                     key={item._id || index}
-                    className="bg-white rounded-xl p-8 shadow-[0_4px_20px_rgba(0,0,0,0.08)] border border-gray-100 relative overflow-hidden group hover:-translate-y-2 hover:shadow-2xl transition-all duration-300"
-                  >
+                    className="bg-white rounded-xl p-8 shadow-[0_4px_20px_rgba(0,0,0,0.08)] border border-gray-100 relative overflow-hidden group hover:-translate-y-2 hover:shadow-2xl transition-all duration-300">
                     {/* Red Triangle Accent */}
                     <div className="absolute top-0 right-0 w-0 h-0 border-t-50 border-t-[#c60505] border-l-50 border-l-transparent" />
 
                     <div className="w-16 h-16 rounded-full border-2 border-[#c60505] flex items-center justify-center mb-6 group-hover:bg-[#c60505] group-hover:text-white transition-colors duration-300">
-                      <IconComponent size={30} className="text-[#c60505] group-hover:text-white transition-colors duration-300" strokeWidth={1.5} />
+                      <IconComponent
+                        size={30}
+                        className="text-[#c60505] group-hover:text-white transition-colors duration-300"
+                        strokeWidth={1.5}
+                      />
                     </div>
 
                     <h3 className="text-xl font-bold text-gray-900 mb-4">
@@ -323,7 +345,9 @@ const Globalrecruitmentservices = () => {
 
                     <div
                       className="text-gray-900 leading-relaxed text-sm md:text-base"
-                      dangerouslySetInnerHTML={{ __html: item.contentHtml?.replace(/\r\n/g, ' ') }}
+                      dangerouslySetInnerHTML={{
+                        __html: item.contentHtml?.replace(/\r\n/g, " "),
+                      }}
                     />
                   </div>
                 );
@@ -332,7 +356,6 @@ const Globalrecruitmentservices = () => {
           </div>
         </section>
       )}
-
 
       {/* ===== OUR SERVICES SECTION (IMAGE MATCHED UI) ===== */}
       {ourServicesSection.length > 0 && (
@@ -353,8 +376,7 @@ const Globalrecruitmentservices = () => {
                 return (
                   <div
                     key={item._id || index}
-                    className="relative bg-white rounded-2xl shadow-xl p-6 overflow-hidden"
-                  >
+                    className="relative bg-white rounded-2xl shadow-xl p-6 overflow-hidden">
                     {/* Red corner ribbon */}
                     <div className="absolute top-0 right-0 w-24 h-24 bg-[#c60505] rotate-45 translate-x-12 -translate-y-12" />
 
@@ -387,13 +409,10 @@ const Globalrecruitmentservices = () => {
         </section>
       )}
 
-
-
       {/* ===== INDUSTRIES WE SERVE (SLIDER) ===== */}
       {industriesSection.length > 0 && (
         <section className="py-20 bg-white">
           <div className="max-w-6xl mx-auto px-6 md:px-12">
-
             {/* Heading */}
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
@@ -418,8 +437,7 @@ const Globalrecruitmentservices = () => {
                 breakpoints={{
                   768: { slidesPerView: 2 },
                   1024: { slidesPerView: 3 },
-                }}
-              >
+                }}>
                 {industriesSection.map((industry, index) => {
                   const IconComponent = getIndustryIcon(industry.title);
                   const roles = parseRoles(industry.contentHtml);
@@ -427,7 +445,6 @@ const Globalrecruitmentservices = () => {
                   return (
                     <SwiperSlide key={industry._id || index}>
                       <div className="bg-white rounded-2xl shadow-xl p-8 h-full transition hover:shadow-2xl">
-
                         {/* Icon */}
                         <div className="mb-6">
                           <IconComponent size={40} className="text-[#c60505]" />
@@ -484,19 +501,18 @@ const Globalrecruitmentservices = () => {
                 </h2>
 
                 <div className="space-y-1">
-                  {parseRoles(trackRecordSection[0]?.contentHtml).map((stat, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center gap-0"
-                    >
-                      <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0">
-                        <Check size={20} className="text-white" />
+                  {parseRoles(trackRecordSection[0]?.contentHtml).map(
+                    (stat, index) => (
+                      <div key={index} className="flex items-center gap-0">
+                        <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0">
+                          <Check size={20} className="text-white" />
+                        </div>
+                        <p className="text-white text-base leading-relaxed">
+                          {stat}
+                        </p>
                       </div>
-                      <p className="text-white text-base leading-relaxed">
-                        {stat}
-                      </p>
-                    </div>
-                  ))}
+                    )
+                  )}
                 </div>
               </div>
 
@@ -510,7 +526,11 @@ const Globalrecruitmentservices = () => {
                   />
                 ) : (
                   <div className="bg-gray-50 rounded-3xl p-16 text-center">
-                    <TrendingUp size={80} className="text-[#c60505] mx-auto mb-6" strokeWidth={1} />
+                    <TrendingUp
+                      size={80}
+                      className="text-[#c60505] mx-auto mb-6"
+                      strokeWidth={1}
+                    />
                     <h3 className="text-2xl font-bold text-gray-900">
                       Proven Results
                     </h3>
@@ -522,12 +542,10 @@ const Globalrecruitmentservices = () => {
         </section>
       )}
 
-
       {/* ===== READY TO BUILD YOUR TEAM CTA ===== */}
       {readyToBuildSection.length > 0 && (
         <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-
             {/* LEFT CONTENT */}
             <div className="text-left">
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 leading-tight">
@@ -538,10 +556,10 @@ const Globalrecruitmentservices = () => {
                 className="text-gray-700 text-lg leading-relaxed space-y-3"
                 dangerouslySetInnerHTML={{
                   __html: readyToBuildSection[0]?.contentHtml
-                    ?.replace(/\r\n\r\n/g, '</p><p>')
-                    ?.replace(/\r\n/g, '<br/>')
-                    ?.replace(/^/, '<p>')
-                    ?.concat('</p>')
+                    ?.replace(/\r\n\r\n/g, "</p><p>")
+                    ?.replace(/\r\n/g, "<br/>")
+                    ?.replace(/^/, "<p>")
+                    ?.concat("</p>"),
                 }}
               />
 
@@ -563,8 +581,6 @@ const Globalrecruitmentservices = () => {
           </div>
         </section>
       )}
-
-
 
       <ConnectWithUs data={connectData.connect} />
     </div>

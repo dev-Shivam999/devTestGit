@@ -3,7 +3,7 @@ import data from "../data/swifttravels.json";
 export const Swifttravels = () => {
   return (
     <>
-      <section className="relative w-full h-[800px] overflow-hidden">
+      <section className="relative w-full min-h-[800px] sm:h-[800px] overflow-hidden">
         {/* IMAGE (Right → Left) */}
         <div
           className="absolute inset-0 bg-cover bg-center"

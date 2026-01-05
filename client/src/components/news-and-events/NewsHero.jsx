@@ -12,100 +12,80 @@
 
 // export default NewsAndMediaHero;
 
-
-
-
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const NewsAndMediaHero = ({ data }) => {
-    const { title, slider } = data;
-    const { slides, autoplay, interval } = slider;
-    const [current, setCurrent] = useState(0);
+  const { title, slider } = data;
+  const { slides, autoplay, interval } = slider;
+  const [current, setCurrent] = useState(0);
 
-    useEffect(() => {
-        if (!autoplay) return;
-        const timer = setInterval(() => {
-            setCurrent((prev) => (prev + 1) % slides.length);
-        }, interval || 3000);
+  useEffect(() => {
+    if (!autoplay) return;
+    const timer = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % slides.length);
+    }, interval || 3000);
 
-        return () => clearInterval(timer);
-    }, [autoplay, interval, slides.length]);
+    return () => clearInterval(timer);
+  }, [autoplay, interval, slides.length]);
 
-    const prevSlide = () => {
-        setCurrent((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
-    };
+  const prevSlide = () => {
+    setCurrent((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+  };
 
-    const nextSlide = () => {
-        setCurrent((prev) => (prev + 1) % slides.length);
-    };
+  const nextSlide = () => {
+    setCurrent((prev) => (prev + 1) % slides.length);
+  };
 
-    return (
-        <section className="relative w-full h-[800px] overflow-hidden">
+  return (
+    <section className="relative w-full min-h-[800px] sm:h-[800px] overflow-hidden">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={current}
+          className="absolute inset-0"
+          initial={{ opacity: 0.8 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.8 }}>
+          {/* IMAGE (Right → Left) */}
+          <motion.div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: `url(${slides[current].image})` }}
+            initial={{ x: 200 }}
+            animate={{ x: 0 }}
+            exit={{ x: -200 }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
+          />
 
-            <AnimatePresence mode="wait">
-                <motion.div
-                    key={current}
-                    className="absolute inset-0"
-                    initial={{ opacity: 0.8 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.8 }}
-                >
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-black/50" />
 
-                    {/* IMAGE (Right → Left) */}
-                    <motion.div
-                        className="absolute inset-0 bg-cover bg-center"
-                        style={{ backgroundImage: `url(${slides[current].image})` }}
-                        initial={{ x: 200 }}
-                        animate={{ x: 0 }}
-                        exit={{ x: -200 }}
-                        transition={{ duration: 0.8, ease: "easeInOut" }}
-                    />
+          {/* CONTENT (Bottom → Up) */}
+          <motion.div className="relative z-20 max-w-7xl mx-auto px-6 md:px-20 h-full flex items-center">
+            <h1 className="relative text-4xl md:text-5xl mx-auto font-bold text-white">
+              {title}
+            </h1>
+          </motion.div>
+        </motion.div>
+      </AnimatePresence>
 
-                    {/* Overlay */}
-                    <div className="absolute inset-0 bg-black/50" />
+      {/* Arrows */}
+      <button
+        onClick={prevSlide}
+        className="absolute left-4 top-1/2 -translate-y-1/2 z-30 bg-black/50 text-white text-5xl px-3 rounded-full">
+        ‹
+      </button>
 
-                    {/* CONTENT (Bottom → Up) */}
-                    <motion.div
-                        className="relative z-20 max-w-7xl mx-auto px-6 md:px-20 h-full flex items-center">
-
-                        <h1 className="relative text-4xl md:text-5xl mx-auto font-bold text-white">
-                            {title}
-                        </h1>
-
-
-                    </motion.div>
-
-                </motion.div>
-            </AnimatePresence>
-
-            {/* Arrows */}
-            <button
-                onClick={prevSlide}
-                className="absolute left-4 top-1/2 -translate-y-1/2 z-30 bg-black/50 text-white text-5xl px-3 rounded-full"
-            >
-                ‹
-            </button>
-
-            <button
-                onClick={nextSlide}
-                className="absolute right-4 top-1/2 -translate-y-1/2 z-30 bg-black/50 text-white text-5xl px-3 rounded-full"
-            >
-                ›
-            </button>
-        </section>
-    );
+      <button
+        onClick={nextSlide}
+        className="absolute right-4 top-1/2 -translate-y-1/2 z-30 bg-black/50 text-white text-5xl px-3 rounded-full">
+        ›
+      </button>
+    </section>
+  );
 };
 
 export default NewsAndMediaHero;
-
-
-
-
-
-
-
 
 // import { useEffect, useState } from "react";
 // import { motion } from "motion/react"
@@ -191,4 +171,3 @@ export default NewsAndMediaHero;
 // };
 
 // export default HomeSlider;
-

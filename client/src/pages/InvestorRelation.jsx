@@ -5,73 +5,72 @@ import { fetchInvestorCategoryBySlug } from "../redux/slices/investorSlice";
 import investorData from "../data/investorRelation.json";
 
 const InvestorRelation = () => {
-    const { slug } = useParams();
-    const location = useLocation();
-    const dispatch = useDispatch();
-    const { category, reports, loading, error } = useSelector(
-        (state) => state.investor
-    );
+  const { slug } = useParams();
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const { category, reports, loading, error } = useSelector(
+    (state) => state.investor
+  );
 
-    const isMainPage = location.pathname === "/investor-relation";
+  const isMainPage = location.pathname === "/investor-relation";
 
-    useEffect(() => {
-        if (slug) {
-            dispatch(fetchInvestorCategoryBySlug(slug));
-        }
-    }, [slug, dispatch]);
-
-    if (slug && loading) {
-        return (
-            <div className="w-full min-h-screen flex items-center justify-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600" />
-            </div>
-        );
+  useEffect(() => {
+    if (slug) {
+      dispatch(fetchInvestorCategoryBySlug(slug));
     }
+  }, [slug, dispatch]);
 
-    if (slug && error) {
-        return (
-            <div className="w-full min-h-screen flex items-center justify-center">
-                <p className="text-red-600 text-lg">{error}</p>
-            </div>
-        );
-    }
-
-    const displayData =
-        slug && category
-            ? {
-                  hero: {
-                      title: category.name || "Investor Relation",
-                      backgroundImage:
-                          category.sildeImage ||
-                          "/assets/contact/contact-hero.jpg",
-                  },
-                  reports: reports || [],
-              }
-            : investorData;
-
+  if (slug && loading) {
     return (
-        <div className="w-full">
-            {/* ===== HERO ===== */}
-            <section className="relative h-[800px] flex items-center justify-center overflow-hidden">
-                <img
-                    src={displayData.hero.backgroundImage}
-                    alt="Investor Relation"
-                    className="absolute inset-0 w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-black/60" />
-                <h1 className="relative z-10 text-white text-4xl md:text-5xl font-semibold">
-                    {displayData.hero.title}
-                </h1>
-            </section>
+      <div className="w-full min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600" />
+      </div>
+    );
+  }
 
-            {/* ===== REPORTS ===== */}
-            <section className="py-20 bg-gray-50">
-                <div className="max-w-6xl mx-auto px-4 grid md:grid-cols-3 gap-10">
-                    {displayData.reports && displayData.reports.length > 0 ? (
-                        displayData.reports.map((item, index) => (
-                            <div
-                                key={item._id || index}
-                                className="
+  if (slug && error) {
+    return (
+      <div className="w-full min-h-screen flex items-center justify-center">
+        <p className="text-red-600 text-lg">{error}</p>
+      </div>
+    );
+  }
+
+  const displayData =
+    slug && category
+      ? {
+          hero: {
+            title: category.name || "Investor Relation",
+            backgroundImage:
+              category.sildeImage || "/assets/contact/contact-hero.jpg",
+          },
+          reports: reports || [],
+        }
+      : investorData;
+
+  return (
+    <div className="w-full">
+      {/* ===== HERO ===== */}
+      <section className="relative min-h-[800px] sm:h-[800px] flex items-center justify-center overflow-hidden">
+        <img
+          src={displayData.hero.backgroundImage}
+          alt="Investor Relation"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-black/60" />
+        <h1 className="relative z-10 text-white text-4xl md:text-5xl font-semibold">
+          {displayData.hero.title}
+        </h1>
+      </section>
+
+      {/* ===== REPORTS ===== */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-6xl mx-auto px-4 grid md:grid-cols-3 gap-10">
+          {displayData.reports && displayData.reports.length > 0 ? (
+            displayData.reports.map((item, index) => (
+              <div
+                key={item._id || index}
+                className="
                                     group
                                     bg-white border border-gray-200
                                     rounded-xl p-8
@@ -79,37 +78,34 @@ const InvestorRelation = () => {
                                     transition-all duration-300
                                     hover:bg-[#6B0F0F]
                                     hover:border-[#6B0F0F]
-                                "
-                            >
-                                {/* CONTENT */}
-                                <div>
-                                    <h3
-                                        className="
+                                ">
+                {/* CONTENT */}
+                <div>
+                  <h3
+                    className="
                                             text-lg font-semibold mb-4 leading-snug
                                             text-gray-900
                                             group-hover:text-white
-                                        "
-                                    >
-                                        {item.title}
-                                    </h3>
+                                        ">
+                    {item.title}
+                  </h3>
 
-                                    {item.description && (
-                                        <p
-                                            className="
+                  {item.description && (
+                    <p
+                      className="
                                                 text-sm text-gray-600
                                                 group-hover:text-gray-200
-                                            "
-                                        >
-                                            {item.description}
-                                        </p>
-                                    )}
-                                </div>
+                                            ">
+                      {item.description}
+                    </p>
+                  )}
+                </div>
 
-                                {/* CTA */}
-                                <a
-                                    href={item.fileUrl || item.file}
-                                    download
-                                    className="
+                {/* CTA */}
+                <a
+                  href={item.fileUrl || item.file}
+                  download
+                  className="
                                         mt-8 inline-flex items-center justify-center
                                         px-6 py-3 rounded-md font-medium
                                         border-2 border-[#FF3B1F]
@@ -118,36 +114,23 @@ const InvestorRelation = () => {
                                         group-hover:bg-[#FF3B1F]
                                         group-hover:text-white
                                         group-hover:border-[#FF3B1F]
-                                    "
-                                >
-                                    {item.buttonText || "Download Report"}
-                                </a>
-                            </div>
-                        ))
-                    ) : (
-                        <div className="col-span-full text-center text-gray-600">
-                            No reports available.
-                        </div>
-                    )}
-                </div>
-            </section>
+                                    ">
+                  {item.buttonText || "Download Report"}
+                </a>
+              </div>
+            ))
+          ) : (
+            <div className="col-span-full text-center text-gray-600">
+              No reports available.
+            </div>
+          )}
         </div>
-    );
+      </section>
+    </div>
+  );
 };
 
 export default InvestorRelation;
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import { useEffect } from "react";
 // import { useParams, useLocation } from "react-router-dom";
@@ -160,7 +143,7 @@ export default InvestorRelation;
 //     const location = useLocation();
 //     const dispatch = useDispatch();
 //     const { category, reports, loading, error } = useSelector(state => state.investor);
-    
+
 //     // Check if we're on the main investor-relation page
 //     const isMainPage = location.pathname === '/investor-relation';
 
@@ -264,10 +247,10 @@ export default InvestorRelation;
 //                                                 </span>
 //                                                 {item.uploadedDate && (
 //                                                     <span className="text-sm text-gray-500">
-//                                                         {new Date(item.uploadedDate).toLocaleDateString('en-US', { 
-//                                                             year: 'numeric', 
-//                                                             month: 'short', 
-//                                                             day: 'numeric' 
+//                                                         {new Date(item.uploadedDate).toLocaleDateString('en-US', {
+//                                                             year: 'numeric',
+//                                                             month: 'short',
+//                                                             day: 'numeric'
 //                                                         })}
 //                                                     </span>
 //                                                 )}

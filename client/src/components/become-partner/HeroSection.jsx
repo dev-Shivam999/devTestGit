@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CountryPhoneInput from "./CountryPhoneInput";
-import { submitPartnerForm, clearPartnerState } from "../../redux/slices/partnerSlice";
+import {
+  submitPartnerForm,
+  clearPartnerState,
+} from "../../redux/slices/partnerSlice";
 
 const LOOKING_FOR_OPTIONS = [
   "Travel Agent - Becoming a Partner",
-  "Traveler - I am looking for a Visa to Travel"
+  "Traveler - I am looking for a Visa to Travel",
 ];
 
 const CITY_OPTIONS = ["Delhi", "Mumbai", "Bangalore", "Chennai", "Other"];
@@ -56,7 +59,6 @@ const HeroSection = ({ data }) => {
     }));
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     dispatch(clearPartnerState());
@@ -88,7 +90,6 @@ const HeroSection = ({ data }) => {
       }),
     };
 
-
     const result = await dispatch(submitPartnerForm(payload));
 
     if (submitPartnerForm.fulfilled.match(result)) {
@@ -107,9 +108,8 @@ const HeroSection = ({ data }) => {
 
   return (
     <section
-      className="relative h-[800px] bg-cover bg-center"
-      style={{ backgroundImage: `url(${data.backgroundImage})` }}
-    >
+      className="relative min-h-[800px] sm:h-[800px] bg-cover bg-center"
+      style={{ backgroundImage: `url(${data.backgroundImage})` }}>
       {/* <div className="absolute inset-0 bg-white/80" /> */}
 
       <div className="relative max-w-6xl mx-auto p-2 md:px-4 py-20 grid lg:grid-cols-2 gap-16 items-center">
@@ -122,7 +122,9 @@ const HeroSection = ({ data }) => {
 
           <ul className="space-y-4">
             {data.points.map((p, i) => (
-              <li key={i} className="text-lg font-semibold">• {p}</li>
+              <li key={i} className="text-lg font-semibold">
+                • {p}
+              </li>
             ))}
           </ul>
         </div>
@@ -158,11 +160,12 @@ const HeroSection = ({ data }) => {
               className="w-full border px-4 py-3 rounded-md"
               value={formData.lookingFor}
               onChange={handleChange}
-              required
-            >
+              required>
               <option value="">What are you looking for?</option>
               {LOOKING_FOR_OPTIONS.map((opt) => (
-                <option key={opt} value={opt}>{opt}</option>
+                <option key={opt} value={opt}>
+                  {opt}
+                </option>
               ))}
             </select>
 
@@ -198,11 +201,12 @@ const HeroSection = ({ data }) => {
               className="w-full border px-4 py-3 rounded-md"
               value={formData.city}
               onChange={handleChange}
-              required
-            >
+              required>
               <option value="">Location (City)</option>
               {CITY_OPTIONS.map((city) => (
-                <option key={city} value={city}>{city}</option>
+                <option key={city} value={city}>
+                  {city}
+                </option>
               ))}
             </select>
 
@@ -216,7 +220,9 @@ const HeroSection = ({ data }) => {
                 onChange={handleChange}
                 className="mt-1 accent-red-600"
               />
-              <label htmlFor="isMsg" className="text-xs ">{data.form.consentText}</label>
+              <label htmlFor="isMsg" className="text-xs ">
+                {data.form.consentText}
+              </label>
             </div>
 
             {/* MESSAGES */}
@@ -235,9 +241,9 @@ const HeroSection = ({ data }) => {
             <button
               type="submit"
               disabled={loading}
-              className={`w-full py-3 rounded-full font-bold text-lg transition-all duration-300 bg-[#FF1033] text-[#FFFDF5] hover:bg-[#511313] hover:text-[#FF1033] ${loading ? "opacity-50 cursor-not-allowed" : ""
-                }`}
-            >
+              className={`w-full py-3 rounded-full font-bold text-lg transition-all duration-300 bg-[#FF1033] text-[#FFFDF5] hover:bg-[#511313] hover:text-[#FF1033] ${
+                loading ? "opacity-50 cursor-not-allowed" : ""
+              }`}>
               {loading ? "Submitting..." : data.form.buttonText}
             </button>
           </form>
@@ -248,18 +254,6 @@ const HeroSection = ({ data }) => {
 };
 
 export default HeroSection;
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import { useState, useEffect } from "react";
 // import { useDispatch, useSelector } from "react-redux";
