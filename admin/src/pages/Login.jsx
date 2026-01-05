@@ -29,51 +29,57 @@ const Login = () => {
   };
 
   return (
-    <div style={{ 
-        display: "flex", 
-        justifyContent: "center", 
-        alignItems: "center", 
-        height: "100vh", 
-        backgroundColor: "#f8f9fa" 
-    }}>
-      <div className="card" style={{ width: "100%", maxWidth: "400px", padding: "2rem" }}>
-         <div className="text-center mb-4">
-             <h2 className="text-primary mb-2">DU Digital</h2>
-             <p className="text-muted">Sign in to Admin Panel</p>
-         </div>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+        backgroundColor: "#f8f9fa",
+      }}>
+      <div
+        className="card"
+        style={{ width: "100%", maxWidth: "400px", padding: "2rem" }}>
+        <div className="text-center mb-4">
+          <h2 className="text-primary mb-2">DU Digital</h2>
+          <p className="text-muted">Sign in to Admin Panel</p>
+        </div>
 
         {error && <div className="alert alert-danger mb-3">{error}</div>}
 
         <form onSubmit={handleSubmit}>
           <FormGroup label="Email Address">
-              <div className="d-flex align-items-center border rounded p-1">
-                  <Mail size={18} className="text-muted mx-2"/>
-                  <Input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter your email"
-                    required
-                    style={{border: 'none', boxShadow: 'none'}}
-                  />
-              </div>
+            <div className="d-flex align-items-center border rounded p-1">
+              <Mail size={18} className="text-muted mx-2" />
+              <Input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email"
+                required
+                style={{ border: "none", boxShadow: "none" }}
+              />
+            </div>
           </FormGroup>
 
           <FormGroup label="Password">
-             <div className="d-flex align-items-center border rounded p-1">
-                  <Lock size={18} className="text-muted mx-2"/>
-                  <Input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Enter your password"
-                    required
-                    style={{border: 'none', boxShadow: 'none'}}
-                  />
-              </div>
+            <div className="d-flex align-items-center border rounded p-1">
+              <Lock size={18} className="text-muted mx-2" />
+              <Input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter your password"
+                required
+                style={{ border: "none", boxShadow: "none" }}
+              />
+            </div>
           </FormGroup>
-
-          <Button type="submit" className="w-100 btn-primary mt-3" disabled={loading}>
+          <Button
+            type="submit"
+            className="bg-[#FF1033] text-[#FFFDF5] px-6 py-3 rounded-full font-bold text-lg hover:bg-[#511313] hover:text-[#FF1033] transition-all duration-300"
+         
+            disabled={loading}>
             {loading ? "Signing in..." : "Sign In"}
           </Button>
         </form>
